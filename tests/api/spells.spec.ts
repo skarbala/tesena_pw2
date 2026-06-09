@@ -1,8 +1,4 @@
 // https://documenter.getpostman.com/view/6199862/SzYewFs9
-
-// zakladny smoke test -> 200 OK response && obsauje data
-
-// overit kombinaciu paramterov
 import test, { expect } from "@playwright/test";
 
 test.describe("GET /spells", () => {
@@ -66,4 +62,18 @@ test.describe("GET /spells", () => {
     const responseJson = await response.json();
     expect(responseJson.length).toEqual(50);
   });
+});
+
+test("create new spell and get spell details", async ({ request }) => {
+  //vytvorime nove kuzlo
+  const response = await request.post("http://localhost:3000/spells", {
+    data: {
+      spell: "Heureka",
+      effect: "random effect",
+      type: "Curse",
+      isUnforgivable: false,
+    },
+  });
+
+  //dotiahneme detail kuzla pomocou dalsieho requestu (get spell)
 });

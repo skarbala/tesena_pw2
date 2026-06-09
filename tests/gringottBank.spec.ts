@@ -118,9 +118,6 @@ test("new investment can be created and correct data are shown", async ({
   await expect(investmentDialog.locator("div.modal-body")).toContainText(
     `Fund: ${investmentData.fund}`,
   );
-
-  console.log(`Fund: ${investmentData.fund}`);
-  console.log(`Name: ${investmentData.customerName}`);
 });
 
 //zaverecna samostatna praca, vytvorte nasledovny test
