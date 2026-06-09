@@ -76,6 +76,51 @@ test("new investment can be created and correct data are shown", async ({
 
   await expect(investmentWrapper).toBeVisible();
   await investmentWrapper.getByRole("button", { name: "View Details" }).click();
+
+  const investmentDialog = page.getByRole("dialog");
+  await expect(investmentDialog).toBeVisible();
+
+  await expect(
+    investmentDialog
+      .locator("div.modal-body")
+      .locator("p")
+      .filter({ hasText: "Fund" }),
+  ).toContainText(investmentData.fund);
+
+  await expect(
+    investmentDialog
+      .locator("div.modal-body")
+      .locator("p")
+      .filter({ hasText: "Name" }),
+  ).toContainText(investmentData.customerName);
+
+  await expect(
+    investmentDialog
+      .locator("div.modal-body")
+      .locator("p")
+      .filter({ hasText: "Years" }),
+  ).toContainText(investmentData.years);
+
+  await expect(
+    investmentDialog
+      .locator("div.modal-body")
+      .locator("p")
+      .filter({ hasText: "Fund" }),
+  ).toHaveText(`Fund: ${investmentData.fund}`);
+
+  await expect(
+    investmentDialog
+      .locator("div.modal-body")
+      .locator("p")
+      .filter({ hasText: `Fund: ${investmentData.fund}` }),
+  ).toBeVisible();
+
+  await expect(investmentDialog.locator("div.modal-body")).toContainText(
+    `Fund: ${investmentData.fund}`,
+  );
+
+  console.log(`Fund: ${investmentData.fund}`);
+  console.log(`Name: ${investmentData.customerName}`);
 });
 
 //zaverecna samostatna praca, vytvorte nasledovny test
