@@ -66,15 +66,17 @@ test.describe("GET /spells", () => {
 });
 
 test("create new spell and get spell details", async ({ request }) => {
+  const newSpell = {
+    spell: faker.commerce.productName(),
+    effect: faker.company.buzzPhrase(),
+    type: "Curse",
+    isUnforgivable: false,
+  };
   //vytvorime nove kuzlo
   const response = await request.post("http://localhost:3000/spells", {
-    data: {
-      spell: faker.commerce.productName(),
-      effect: faker.company.buzzPhrase(),
-      type: "Curse",
-      isUnforgivable: false,
-    },
+    data: newSpell,
   });
+
   const responseJson = await response.json();
   const spellId = responseJson.spell.id;
   expect(spellId).toBeTruthy();
@@ -83,5 +85,7 @@ test("create new spell and get spell details", async ({ request }) => {
     `http://localhost:3000/spells/${spellId}`,
   );
   await expect(spellResponse).toBeOK();
-  //dotiahneme detail kuzla pomocou dalsieho requestu (get spell)
+  const spellResponseJson = await spellResponse.json();
+
+  expect(spellResponseJson.effect).toEqual(newSpell.effect);
 });
