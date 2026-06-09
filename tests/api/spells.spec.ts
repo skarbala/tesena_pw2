@@ -1,5 +1,6 @@
 // https://documenter.getpostman.com/view/6199862/SzYewFs9
 import test, { expect } from "@playwright/test";
+import { faker } from "@faker-js/faker";
 
 test.describe("GET /spells", () => {
   test("returns 200 and contain list of spells", async ({ request }) => {
@@ -68,12 +69,19 @@ test("create new spell and get spell details", async ({ request }) => {
   //vytvorime nove kuzlo
   const response = await request.post("http://localhost:3000/spells", {
     data: {
-      spell: "Heureka",
-      effect: "random effect",
+      spell: faker.commerce.productName(),
+      effect: faker.company.buzzPhrase(),
       type: "Curse",
       isUnforgivable: false,
     },
   });
+  const responseJson = await response.json();
+  const spellId = responseJson.spell.id;
+  expect(spellId).toBeTruthy();
 
+  const spellResponse = await request.get(
+    `http://localhost:3000/spells/${spellId}`,
+  );
+  await expect(spellResponse).toBeOK();
   //dotiahneme detail kuzla pomocou dalsieho requestu (get spell)
 });
