@@ -13,8 +13,8 @@ test("create new spell and check detail", async ({ page, request }) => {
     data: newSpell,
   });
   await expect(response).toBeOK();
-  //open UI
 
+  //open UI
   await page.goto("#/spelleology");
   //enter spell effect
   await page.locator('[data-test="search-input"]').fill(newSpell.effect);

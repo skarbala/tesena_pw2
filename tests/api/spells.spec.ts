@@ -2,9 +2,10 @@
 import test, { expect } from "@playwright/test";
 import { faker } from "@faker-js/faker";
 
+const API_URL = process.env.API_URL;
 test.describe("GET /spells", () => {
   test("returns 200 and contain list of spells", async ({ request }) => {
-    const response = await request.get("http://localhost:3000/spells");
+    const response = await request.get(`${API_URL}/spells`);
     await expect(response).toBeOK();
 
     const responseJson = await response.json();
@@ -23,7 +24,7 @@ test.describe("GET /spells", () => {
   });
 
   test("get spells by type param", async ({ request }) => {
-    const response = await request.get("http://localhost:3000/spells", {
+    const response = await request.get(`${API_URL}/spells`, {
       params: {
         type: "Jinx",
       },
@@ -38,7 +39,7 @@ test.describe("GET /spells", () => {
   });
 
   test("get spells by isUnforgivable param", async ({ request }) => {
-    const response = await request.get("http://localhost:3000/spells", {
+    const response = await request.get(`${API_URL}/spells`, {
       params: {
         isUnforgivable: true,
       },
@@ -53,7 +54,7 @@ test.describe("GET /spells", () => {
   });
 
   test("get spells by limit param", async ({ request }) => {
-    const response = await request.get("http://localhost:3000/spells", {
+    const response = await request.get(`${API_URL}/spells`, {
       params: {
         limit: 50,
       },
@@ -72,7 +73,7 @@ test("create new spell and get spell details", async ({ request }) => {
     isUnforgivable: false,
   };
   //vytvorime nove kuzlo
-  const response = await request.post("http://localhost:3000/spells", {
+  const response = await request.post(`${API_URL}/spells`, {
     data: newSpell,
   });
 
@@ -80,9 +81,7 @@ test("create new spell and get spell details", async ({ request }) => {
   const spellId = responseJson.spell.id;
   expect(spellId).toBeTruthy();
 
-  const spellResponse = await request.get(
-    `http://localhost:3000/spells/${spellId}`,
-  );
+  const spellResponse = await request.get(`${API_URL}/spells/${spellId}`);
   await expect(spellResponse).toBeOK();
   const spellResponseJson = await spellResponse.json();
 
