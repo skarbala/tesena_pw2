@@ -1,4 +1,6 @@
 import test, { expect } from "@playwright/test";
+import { formatCurrency } from "../utils";
+import { faker } from "@faker-js/faker";
 
 test("offer is shown when investment data are entered", async ({ page }) => {
   const investmentData = {
@@ -42,16 +44,32 @@ test("offer is shown when investment data are entered", async ({ page }) => {
   ).toHaveText(formatCurrency(investmentData.investment));
 });
 
-function formatCurrency(
-  value: number | string,
-  currency = "GBP",
-  locale = "en-GB",
-): string {
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency,
-  }).format(Number(value));
-}
+test("new investment can be created and correct data are shown", async ({
+  page,
+}) => {
+  const investmentData = {
+    fund: "Galleon Guardian Fund",
+    investment: "10000",
+    years: "20",
+    customerName: faker.person.fullName(),
+  };
+  await page.goto("http://localhost:8080/#/gringottsBank");
+  await page.locator('[id="selectedFund"]').selectOption(investmentData.fund);
+  await page
+    .locator('input[id="oneTimeInvestment"]')
+    .fill(investmentData.investment);
+  await page.locator('input[id="years"]').fill(investmentData.years);
+  await page.getByRole("button", { name: "Make me an offer" }).click();
+
+  const offerDetail = page.locator("div.offer-detail");
+  await offerDetail
+    .locator('[data-test="customer-name"]')
+    .fill(investmentData.customerName);
+
+  await offerDetail.getByRole("button", { name: "Create Investment" }).click();
+
+  page.locator("ul.investment-list").locator("li");
+});
 
 //zaverecna samostatna praca, vytvorte nasledovny test
 //1. zadam investment data
