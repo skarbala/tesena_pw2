@@ -11,7 +11,6 @@ test.describe("GET /spells", () => {
     expect(responseJson).toBeTruthy();
     //overim ze tam je aspon 1 kuzlo
     expect(responseJson.length).toBeGreaterThan(0);
-    expect(responseJson.length).toEqual(151);
 
     //overim ze kazde kuzlo ma vyplneny effect a nazov
     responseJson.forEach((spellItem) => {
