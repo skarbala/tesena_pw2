@@ -9,7 +9,7 @@ test("offer is shown when investment data are entered", async ({ page }) => {
     years: "20",
   };
   //arrange
-  await page.goto("http://localhost:8080/#/gringottsBank");
+  await page.goto("#/gringottsBank");
   await page.locator('[id="selectedFund"]').selectOption(investmentData.fund);
   await page
     .locator('input[id="oneTimeInvestment"]')
@@ -53,7 +53,7 @@ test("new investment can be created and correct data are shown", async ({
     years: "20",
     customerName: faker.person.fullName(),
   };
-  await page.goto("http://localhost:8080/#/gringottsBank");
+  await page.goto("#/gringottsBank");
   await page.locator('[id="selectedFund"]').selectOption(investmentData.fund);
   await page
     .locator('input[id="oneTimeInvestment"]')
