@@ -58,6 +58,7 @@ test("new investment can be created and correct data are shown", async ({
   await page
     .locator('input[id="oneTimeInvestment"]')
     .fill(investmentData.investment);
+
   await page.locator('input[id="years"]').fill(investmentData.years);
   await page.getByRole("button", { name: "Make me an offer" }).click();
 
@@ -68,14 +69,14 @@ test("new investment can be created and correct data are shown", async ({
 
   await offerDetail.getByRole("button", { name: "Create Investment" }).click();
 
-  page.locator("ul.investment-list").locator("li");
+  const investmentWrapper = page
+    .locator("ul.investment-list")
+    .locator("li")
+    .filter({ hasText: investmentData.customerName });
+
+  await expect(investmentWrapper).toBeVisible();
+  await investmentWrapper.getByRole("button", { name: "View Details" }).click();
 });
 
 //zaverecna samostatna praca, vytvorte nasledovny test
-//1. zadam investment data
-//2. vytvorim offer
-//3. zadam meno
-//4. potvrdim offer (create investment)
-//5. overim ze investment je zobrazeny v liste
-//6. kliknem na View Details
 //7. overim ze v details je spravne zobrazene fond, meno, pocet rokov
